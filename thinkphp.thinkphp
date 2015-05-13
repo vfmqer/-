@@ -1,0 +1,27 @@
+//in this html you have got some notes when you do this product
+about The framework of thinkPHP
+1、ueditor编辑器在thinkphp中保存数据取消转义写入方法
+		//取消thinkphp里面的转义。用法：..\ThinkPHP\Mode下面的common.php 中写入如下代码
+		if (get_magic_quotes_gpc()) {
+		 
+		    function stripslashes_deep($value)
+		 
+		    {
+		 
+		        $value = is_array($value) ?
+		 
+		                    array_map('stripslashes_deep', $value) :
+		 
+		                    stripslashes($value);
+		 
+		        return $value;
+		 
+		    }
+		 
+		    $_POST = array_map('stripslashes_deep', $_POST);
+		 
+		    $_GET = array_map('stripslashes_deep', $_GET);
+		 
+		    $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
+		 
+		}
