@@ -94,7 +94,7 @@ $("$li:visible")
                 var $html = "<div id='test' title='hi'>我是调用函数创建的</div>"
                 return $html;
             }
-38、 $($html).appendTo("div");向div标签代码
+38、 $($html).appendTo("div");向div标签加代码
 39、$(selector).before(content)和$(selector).after(content)，在selector标签前后插入content
 40、$(selector).clone()为复制一个selected标签
 41、replaceWith()和replaceAll()方法都可以用于替换元素或元素中的内容，但它们调用时，内容和被替换元素所在的位置不同，分别为如下所示：
@@ -162,4 +162,48 @@ $("$li:visible")
                 $("div").trigger("change-color");
             });
         </script>
-53、
+53、focus/blur事件
+	$(function() {
+    $("input").bind("focus", function() {
+            $("div").html("请输入您的姓名！");
+        });
+    $("input").bind("blur", function() {
+        if ($(this).val().length == 0)
+            $("div").html("你的名称不能为空！");
+    })
+	});
+54、change事件
+        $(function () {
+        $("#select").bind("change", function () {
+            if ($(this).val() == "苹果")
+                $(this).css("background-color", "red");
+            else
+                $(this).css("background-color", "green");
+        })
+    });	//该脚本实现改变选择框的背景色
+
+        $(function(){$(select).bind("change",function(){$("div").html("你选择的是:"+$(this).val());})});//此代码可以实现动态显示你选择的内容
+55、live()事件 
+    $(function () {
+    $("#btntest").live("click mouseout", function () {
+        $(this).attr("disabled", "true");
+    })
+    $("body").append("<input id='btntest' type='button' value='点击或移出就不可用了' />");
+	});//用live绑定多个事件
+	注意：从 jQuery 1.7 开始，不再建议使用 .live() 方法。1.9不支持.live()，本节代码编辑器里的js引用版本改为了1.8。
+56、绑定多个事件,事件名用空格分开
+57、hind() show方法
+    $(function () {
+    $("h4").bind("click", function () {
+        if ($("#hidval").val() == 0) {
+            $("ul").show();
+            $("#hidval").val(1);
+        } else {
+            $("ul").hide();
+            $("#hidval").val(0);
+        }
+    });
+	});	
+58、show(3000,function(){})//缓慢出现
+	hide(3000,function(){})
+59、	
