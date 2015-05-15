@@ -206,4 +206,194 @@ $("$li:visible")
 	});	
 58、show(3000,function(){})//缓慢出现
 	hide(3000,function(){})
-59、	
+59、$(selector).slideUp(speed,[callback])和$(selector).slideDown(speed,[callback])
+	可以使用slideUp()和slideDown()方法在页面中滑动元素，前者用于向上滑动元素，后者用于向下滑动元素，它们的调用方法分别为：
+60、slideToggle()方法，与toggle方法类似
+61、fadeIn()和fadeOut()方法可以实现元素的淡入淡出效果，前者淡入隐藏的元素，后者可以淡出可见的元素，也可设置透明度
+62、简单的动画效果，变大animate()方法
+   <script type="text/javascript">
+            $(function () {
+                $("span").animate({
+                    width: "80px",
+                    height: "80px"
+                },
+                3000, function () {
+                    $("#tip").html("执行完成!");
+                });
+            });
+        </script>	     
+63、animate()先向右移动，然后放大            
+	$(function () {
+        $("span").animate({
+            left: "+=200px"
+        }, 3000, function () {
+            $(this).animate({
+                height: '+=30px',
+                width: '+=30px'
+            }, 3000, function () {
+                $("#tip").html("执行完成!");
+            });
+        });
+    });
+    </script>        
+64、stop()停止没有完成和动作
+	$("span").stop();
+65、delay(2000)，多个变化时，可用此方法来设置每个方法间的间隔
+66、load()方法、getJSON()方法、getScript()方法
+    <script type="text/javascript">
+    $(function () {
+        $("#btnShow").bind("click", function () {
+            var $this = $(this);
+            //请求一个JOSN数据
+            $.getJSON("http://www.imooc.com/data/sport.json",function(data){
+                $this.attr("disabled", "true");
+                //遍历这个数据，取出所序号为3的数值
+                $.each(data, function (index, sport) {
+                    if(index==3)
+                    $("ul").append("<li>" + sport["name"] + "</li>");
+                });
+
+            });
+        })
+    });
+	</script>
+67、get()请求只能用来读取数据，无法传值到服务器
+        <script type="text/javascript">
+            $(function () {
+                $("#btnShow").bind("click", function () {
+                    var $this = $(this);
+                    $.get("http://www.imooc.com/data/info_f.php",function(data){
+                        $this.attr("disabled", "true");
+                        $("ul").append("<li>我的名字叫：" + data.name + "</li>");
+                        $("ul").append("<li>男朋友对我说：" + data.say + "</li>");
+                    }, "json");
+                })
+            });
+        </script>
+68、post()请求，可以传值到服务器进行运算后返回
+        <script type="text/javascript">
+            $(function () {
+                $("#btnCheck").bind("click", function () {
+                   $.post("http://www.imooc.com/data/check_f.php",
+                   {num:$("#txtNumber").val()},
+                   function (data) {
+                        $("ul").append("<li>你输入的<b>  "
+                        + $("#txtNumber").val() + " </b>是<b> "
+                        + data + " </b></li>");
+                    });
+                })
+            });
+        </script>        
+69、对表单元素进行序列化，可以把所有元素用&连接起来，方便ajax调用。   
+     <script type="text/javascript">
+            $(function () {
+                $("#btnAction").bind("click", function () {
+                $("#litest").html($("form").serialize());
+                })
+            })
+        </script>        
+70、jQuery.ajax([settings])或$.ajax([settings])使用ajax()方法是最底层、功能最强大的请求服务器数据的方法，它不仅可以获取服务器返回的数据，还能向服务器发送请求并传递数值
+	<script type="text/javascript">
+	    $(function () {
+	        $("#btnCheck").bind("click", function () {
+	            $.ajax({
+	                url:"http://www.imooc.com/data/check.php",
+	                data: { num: $("#txtNumber").val() },
+	                dataType:"text",
+	                type:"get",
+	                success: function (data) {
+	                    $("ul").append("<li>你输入的<b>  "
+	                    + $("#txtNumber").val() + " </b>是<b> "
+	                    + data + " </b></li>");
+	                }
+	            });
+	        })
+	    });
+	</script>
+71、ajaxSetup()方法设置全局Ajax默认选项
+  与.ajax配置相同，在此写过就不需要在每个.ajax中去写入配置文件了。
+72、ajaxStart()、ajaxStop()方法，在执行ajax时、结束时调用函数
+	<script type="text/javascript">
+	    $(function () {
+	        $("#divload").ajaxStart(function(){
+	            $(this).html("正在请求数据...");
+	        });
+	        $("#divload").ajaxStop(function(){
+	            $(this).html("数据请求完成！");
+	        });
+	        $("#btnShow").bind("click", function () {
+	            var $this = $(this);
+	            $.ajax({
+	                url: "http://www.imooc.com/data/info_f.php",
+	                dataType: "json",
+	                success: function (data) {
+	                    $this.attr("disabled", "true");
+	                $("ul").append("<li>我的名字叫：" + data.name + "</li>");
+	                $("ul").append("<li>男朋友对我说：" + data.say + "</li>");
+	                }
+	            });
+	        })
+	    });
+	</script>  	
+73、定义一个JSON对象，通过.each()工具函数，获取名称和内容，显示在页面中。
+	<!DOCTYPE html>
+	<html>
+	    <head>
+	        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />       
+	        <title>挑战题</title>
+	        <style>
+	    		.ui-table {margin: 20px auto; border-collapse: collapse; font-size: 12px; text-align: center; color: #666;}
+				.ui-table th, .ui-table td {padding: 4px 8px; border: 1px solid #ccc;}
+				.ui-table th {background-color: #f0f0f0;}
+	        </style>
+	        <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+	    </head>
+	    <body>
+	        <table class="ui-table" width="800" id="studentInfo">
+	            <caption><h2>XX中学学生资料</h2></caption>
+	            <thead>
+	            <tr>
+	                <th style="width:45px">序号</th>
+	                <th>姓名</th>
+	                <th>学号</th>
+	                <th>性别</th>
+	                <th>年龄</th>
+	                <th>所在班级</th>
+	                <th>富二代</th>
+	            </tr>
+	            </thead>
+	            <tbody>
+	            	<tr>
+	            		<td colspan="7">
+	            			<input type="button" value="加载资料" onclick="DisplayInfo()">
+	            		</td>
+	            	</tr>
+	            </tbody>
+	        </table>
+	        <script>
+	        var students = [
+	        	{"name": "张三", "id": "00145", "sex": "男", "age": "15", "class": "初一(3)班", "vip": "否"},
+	        	{"name": "李四", "id": "00110", "sex": "女", "age": "15", "class": "初二(2)班", "vip": "否"},
+	        	{"name": "王五", "id": "00251", "sex": "男", "age": "17", "class": "初一(4)班", "vip": "是"},
+	        	{"name": "赵六", "id": "00031", "sex": "女", "age": "16", "class": "初二(3)班", "vip": "否"},
+	        	{"name": "吴七", "id": "00009", "sex": "女", "age": "19", "class": "初三(6)班", "vip": "否"},
+	        	{"name": "候八", "id": "00352", "sex": "男", "age": "14", "class": "初一(2)班", "vip": "是"},
+	        ];     
+	        function DisplayInfo() {
+	        	var tbody = $("#studentInfo").find("tbody");
+	        		tbody.empty();
+	        	$.each(students,function(index, el) {
+	        		tbody.append(
+	        			"<tr><td>" + parseInt(index+1) + "</td><td>" +
+									  el.name + "</td><td>" +
+							          el.id +   "</td><td>" +
+		    						  el.sex +   "</td><td>" +
+		    						  el.age +   "</td><td>" +
+		    						  el.class +   "</td><td>" +
+		    						  el.vip +   "</td></tr>");
+	        	});
+	        }
+	        </script>
+	    </body>
+</html>	
+74、
