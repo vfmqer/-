@@ -396,4 +396,195 @@ $("$li:visible")
 	        </script>
 	    </body>
 </html>	
-74、
+74、validate插件
+	<script type="text/javascript">
+	    $(function () {
+	        $("#frmV").validate(
+	          {
+	              /*自定义验证规则*/
+	              rules: {
+	                    email:{
+	                    required:true,
+	                    email:true,
+	                  }
+	              },
+	              /*错误提示位置*/
+	              errorPlacement: function (error, element) {
+	                  error.appendTo(".tip");
+	              }
+	          }
+	        );
+	    });
+	</script>
+75、form插件
+        <script type="text/javascript">
+            $(function () {
+                var options = {
+                    url: "http://www.imooc.com/data/form_f.php", 
+                    target: ".tip"
+                }
+                 $("#frmV").ajaxForm(options);
+            });
+        </script>
+     // http://www.imooc.com/data/form_f.php
+      <?php 
+      $user = $_POST['user'];
+      $pass = $_POST['pass'];
+      echo '用户名:'.$user."密码:".$pass
+      ?>  	
+76、lightBox()插件，在加载图片时自带进度条、还能自动播放的方式浏览图片
+	<script type="text/javascript">
+	    $(function () {
+	         $(".divPics").lightBox({
+	            overlayBgColor: "#666", //图片浏览时的背景色
+	            overlayOpacity: 0.5, //背景色的透明度
+	            containerResizeSpeed: 600 //图片切换时的速度
+	        })
+	    });
+	</script>      
+77、jqzoom()插件，和淘宝查看物品类似
+    <script type="text/javascript">
+        $(function () {
+             $("#jqzoom").jqzoom({ //绑定图片放大插件jqzoom
+                zoomWidth: 330, //小图片所选区域的宽
+                zoomHeight: 330, //小图片所选区域的高
+                zoomType: 'reverse' //设置放大镜的类型
+            });
+        });
+    </script>	
+78、 $.cookie设置cookie
+79、autocomplete()搜索插件
+	<script type="text/javascript">
+	    $(function () {
+	        var arrUserName = ["王五", "刘明", "李小四", "刘促明", "李渊", "张小三", "王小明"];
+	        $("#txtSearch").autocomplete(arrUserName,{
+	            minChars: 0, //双击空白文本框时显示全部提示数据
+	            formatItem: function (data, i, total) {
+	                return "<I>" + data[0] + "</I>"; //改变匹配数据显示的格式
+	            },
+	            formatMatch: function (data, i, total) {
+	                return data[0];
+	            },
+	            formatResult: function (data) {
+	                return data[0];
+	            }
+	        }).result(SearchCallback); 
+	        function SearchCallback(event, data, formatted) {
+	            $(".tip").show().html("您的选择是：" + (!data ? "空" : formatted));
+	        }
+	    });
+	</script>   
+80、$(selector).contextMenu(menuId,{options});元素设置右键菜单
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml">
+	    <head>
+	        <title>右键菜单插件</title>
+	        <link href="http://www.imooc.com/data/jquery.contextmenu.css" rel="stylesheet" type="text/css" />
+	        <link href="style.css" rel="stylesheet" type="text/css" />
+	        <script type="text/javascript" src="http://www.imooc.com/data/jquery-1.8.2.min.js"></script>
+	        <script src="http://www.imooc.com/data/jquery.contextmenu.js" type="text/javascript"></script>
+	    </head>
+	    
+	    <body>
+	        <div id="divtest">
+	            <div class="title"><span class="fl">点击右键</span></div>
+	            <div class="content">
+	                <input id="btnSubmit" type="button" value="提交" />
+	                <div class="tip"></div>
+	            </div>
+	            <div class="contextMenu" id="sysMenu">
+	                <ul>
+	                    <li id="Li3"><img src="http://img.mukewang.com/52e4b34b0001bb6d00160016.jpg" alt="" />保存</li>
+	                    <li id="Li4"><img src="http://img.mukewang.com/52e4b3680001424900160016.jpg" alt="" />退出</li>
+	                </ul>
+	            </div>
+	        </div>
+	        
+	        <script type="text/javascript">
+	            $(function () {
+	                $("#btnSubmit").contextMenu('sysMenu',
+	                  { bindings:
+	                     {
+	                         'Li3': function (Item) {
+	                             $(".tip").show().html("您点击了“保存”项");
+	                         },
+	                         'Li4': function (Item) {
+	                             $(".tip").show().html("您点击了“退出”项");
+	                         }
+	                     }
+	                  });
+	            });
+	        </script>
+	    </body>
+	</html>
+81、自定义对象级插件——lifocuscolor插件
+	/*---------------------------------------/
+	功能：设置列表中表项获取鼠标焦点时的背景色
+	参数：li_col【可选】 鼠标所在表项行的背景色
+	返回：原调用对象
+	示例：$("ul").focusColor("red");
+	/---------------------------------------*/
+	; (function($) {
+	    $.fn.extend({
+	        "focusColor": function(li_col) {
+	            var def_col = "#ccc"; //默认获取焦点的色值
+	            var lst_col = "#fff"; //默认丢失焦点的色值
+	            //如果设置的颜色不为空，使用设置的颜色，否则为默认色
+	            li_col = (li_col == undefined) ? def_col : li_col;
+	            $(this).find("li").each(function() { //遍历表项<li>中的全部元素
+	                $(this).mouseover(function() { //获取鼠标焦点事件
+	                    $(this).css("background-color", li_col); //使用设置的颜色
+	                }).mouseout(function() { //鼠标焦点移出事件
+	                    $(this).css("background-color", "#fff"); //恢复原来的颜色
+	                })
+	            })
+	            return $(this); //返回jQuery对象，保持链式操作
+	        }
+	    });
+	})(jQuery);
+
+ 	<script type="text/javascript">
+	    $(function () {
+	        $("ul").focusColor("blue") //调用自定义的插件
+	    })
+	</script>
+83、自定义类级别插件—— twoaddresult
+	/*------------------------------------/
+	功能：计算二个数字相加或相减的结果
+	参数：数字p1,p2
+	返回：两数相加后的结果
+	示例：$.AddNum(1,2);
+	/------------------------------------*/
+	; (function($) {
+	    $.extend({
+	        "addNum": function(p1, p2) {
+	            //如果传入的数字不为空，使用传入的数字，否则为0
+	            p1 = (p1 == undefined) ? 0 : p1;
+	            p2 = (p2 == undefined) ? 0 : p2;
+	            var intResult = parseInt(p1) + parseInt(p2);
+	            return intResult;
+	        },
+	        "subNum": function(p1, p2) {
+	            //如果传入的数字不为空，使用传入的数字，否则为0
+	            var intResult = 0;
+	            p1 = (p1 == undefined) ? 0 : p1;
+	            p2 = (p2 == undefined) ? 0 : p2;
+	            if (p1 > p2) { //如果传入的参数前者大于后者
+	                intResult = parseInt(p1) - parseInt(p2);
+	            }
+	            return intResult;
+	        }
+	    });
+	})(jQuery);	
+
+	调用如下:
+        <script type="text/javascript">
+            $(function () {
+                $("#btnCount").bind("click", function () {
+                    $("#input3").val(
+                        $.subNum($("#input1").val(),$("#input2").val()
+        			));
+                });
+            });
+        </script>
+84、        
