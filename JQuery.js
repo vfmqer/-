@@ -587,4 +587,292 @@ $("$li:visible")
                 });
             });
         </script>
-84、        
+84、draggable()事件，元素托动事件
+	css样式把    cursor: move;这样就可以把鼠标设置成十字型的
+	<body>
+	<div id="divtest">
+	    <div id="x" class="drag">沿x轴拖拽</div>
+	    <div id="y" class="drag">沿y轴拖拽</div>
+	</div>
+
+	<script type="text/javascript">
+	    $(function () {
+	        $("#x").draggable({containment:"#divtest",axis:"x"})
+	        $("#y").draggable({axis:"y"})
+	    });
+	</script>       
+85、droppable()事件，将氟拖曳后的任意元素放在指定元素中。
+    <script type="text/javascript">
+        var sum=0;
+        $(function () {
+            $(".drag").draggable();
+            $(".cart").droppable({
+                drop: function () {
+                    sum++;   
+                    $(this).addClass("focus")
+                    .find("#tip").html("");
+                    $(".title span").html(sum);
+                }
+            });
+            
+            $("#divtest").children(':first').droppable({
+                drop:function(){
+                    sum--;
+                    $(".cart").removeClass("focus");
+                    $("#tip").html("还没有产品");
+                    $(".title span").html(sum);
+                }
+            });
+        });
+    </script>
+86、sortable()事件，可以对option和li元素进行排列
+    <script type="text/javascript">
+        $(function () {
+            $("ul").sortable({
+                delay: 2,//为防止点击事件冲突，延时2HS吧
+                opacity:0.35,//以透明度0.35随意托动
+            })
+        });
+    </script>
+87、accordion()事件，面板折叠插件
+        <script type="text/javascript">
+            $(function () {
+                $("#accordion").accordion();
+            });
+        </script>    
+88、tabs()选项卡插件 会自动加载原有的样式
+	css样式如下
+	#divtest
+	{
+	    width: 282px;
+	    font-size: 13px;
+	}
+	p
+	{
+	    padding: 0px;
+	    margin: 0px;
+	    line-height: 23px;
+	}
+
+	<body>
+	<div id="divtest">
+	    <div id="tabs">
+	        <ul>
+	            <li><a href="#tabs-1">最爱吃的水果</a></li>
+	            <li><a href="#tabs-2">最喜欢的运动</a></li>
+	        </ul>
+	        <div id="tabs-1">
+	            <p>橘子</p>
+	            <p>香蕉</p>
+	            <p>葡萄</p>
+	            <p>苹果</p>
+	            <p>西瓜</p>
+	        </div>
+	        <div id="tabs-2">
+	            <p>足球</p>
+	            <p>散步</p>
+	            <p>篮球</p>
+	            <p>乒乓球</p>
+	            <p>骑自行车</p>
+	        </div>
+	    </div>
+	</div>
+
+	<script type="text/javascript">
+	    $(function () {
+	       $("#tabs").tabs ({
+	            //设置各选项卡在切换时的动画效果
+	            fx: { opacity: "toggle", height: "toggle" },
+	            event: "mousemove" //通过移动鼠标事件切换选项卡
+	        })
+	    });
+	</script>        
+89、dialog()事件，显示的对话框有动画效果
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml">
+	    <head>
+	        <title>对话框插件</title>
+	        <link href="http://www.imooc.com/data/jquery-ui.css" rel="stylesheet" type="text/css" />
+	        <link href="style.css" rel="stylesheet" type="text/css" />
+	        <script src="http://www.imooc.com/data/jquery-1.8.2.min.js" type="text/javascript"></script>
+	        <script src="http://www.imooc.com/data/jquery-ui-1.9.2.min.js" type="text/javascript"></script>
+	    </head>
+	    
+	    <body>
+	        <div id="divtest">
+	            <div class="content">
+	                <span id="spnName" class="fl">张三</span>
+	                <input id="btnDelete" type="button" value="删除"  class="fr"/>
+	            </div>
+	            <div id='dialog-modal'></div>
+	        </div>
+	        
+	        <script type="text/javascript">
+	            $(function () {
+	                $("#btnDelete").bind("click", function () { //询问按钮事件
+	                    if ($("#spnName").html() != null) { //如果对象不为空
+	                        sys_Confirm("您真的要删除该条记录吗？");
+	                        return false;
+	                    }
+	                });
+	            });
+	            function sys_Confirm(content) { //弹出询问信息窗口
+	                $("#dialog-modal").dialog({
+	                
+	                    height: 140,
+	                    modal: true,
+	                    title: '系统提示',
+	                    hide: 'slide',
+	                    buttons: {
+	                        '确定': function () {
+	                            $("#spnName").remove();
+	                            $(this).dialog("close");
+	                        },
+	                        '取消': function () {
+	                            $(this).dialog("close");
+	                        }
+	                    },
+	                    open: function (event, ui) {
+	                        $(this).html("");
+	                        $(this).append("<p>" + content + "</p>");
+	                    }
+	                });
+	            }
+	        </script>
+	    </body>
+	</html>	
+90、menu()插件，设置class="ui-state-disabled"则该项不能被选中
+	 <body>
+	        <ul id="menu">
+	            <li><a href="#">小明一中</a>
+	                <ul>
+	                    <li><a href="#">高中部</a>
+	                        <ul>
+	                            <li><a href="#">高一(1)班</a></li>
+	                            <li><a href="#">高一(2)班</a></li>
+	                            <li><a href="#">高一(3)班</a>
+	                                <ul>
+	                                    <li><a href="#">小胡</a></li>
+	                                    <li><a href="#">小李</a></li>
+	                                    <li><a href="#">小陈</a></li>
+	                                </ul>
+	                            </li>
+	                        </ul>
+	                    </li>
+	                    <li><a href="#">初中部</a>
+	                        <ul>
+	                            <li><a href="#">初一(1)班</a></li>
+	                            <li><a href="#">初一(2)班</a></li>
+	                            <li><a href="#">初一(3)班</a></li>
+	                        </ul>
+	                    </li>
+	                    <li><a href="#">教研部</a></li>
+	                </ul>
+	            </li>
+	            <li class="ui-state-disabled"><a href="#">大明二中</a></li>
+	        </ul>
+	        
+	        <script type="text/javascript">
+	            $(function () {
+	                $("#menu").menu();
+	            });
+	        </script>
+	    </body>	
+91、微调按钮插件——spinner
+92、tooltip插件，提示title标签中的内容
+    <body>
+        <div id="divtest">
+            <div class="title">
+                工具提示插件</div>
+            <div class="content">
+                <div>
+                    <label for="name">
+                        姓名</label>
+                    <input id="name" name="name" title="我是土豪，欢迎与我做朋友" />
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            $(function () {
+                $("#name").tooltip({
+                    show: {
+                        effect: "slideDown",
+                        delay: 350
+                    },
+                    hide: {
+                        effect: "explode",
+                        delay: 350
+                    },
+                    position: {
+                        my: "left top",
+                        at: "left bottom"
+                    }
+                });
+            });
+        </script>	    
+93、$.browser获取浏览器的名称和版本信息
+          <script type="text/javascript">
+            $(function () {
+                var strTmp = "您的浏览器名称是：";
+                if ($.browser.chrome) { //谷歌浏览器
+                    strTmp += "Chrome";
+                }
+                if ($.browser.mozilla) { //火狐相关浏览器
+                    strTmp += "Mozilla FireFox";
+                }
+                strTmp += "<br /><br /> 版本号是：" //获取版本号
+                       strTmp+=$.browser.version;
+                $(".content").html(strTmp);
+            });
+        </script>
+    </body>      
+94、$.support.boxModel检测是否属于w3c模型
+95、$.isEmptyObject(obj);检测对象是否为空
+96、$.isPlainObject (obj);检测是否为原始对象，是否通过{}、new Object()关键字创建
+97、$.contains (container, contained);检测两个节点是否存在包含关系
+98、$.trim()去除首尾空格
+99、$.param(obj/array)序列化对象
+100、$。extend()扩展工具函数
+	(function ($) {
+	                $.extend ({
+	                    "MinNum": function (p1, p2) {
+	                        return (p1 > p2) ? p2 : p1;
+	                    }
+	                });
+	            })(jQuery);
+	            $(function () {
+	                $("#btnShow").bind("click", function () {
+	                    $(".tip").html("");
+	                    var strTmp = "17与18中最小的数是：";
+	                    strTmp +=$.MinNum(17, 18);
+	                    //显示在页面中
+	                    $(".tip").show().append(strTmp);
+	                });
+	            });
+	        </script>
+101、$.extend()扩展Object对象
+	    <body>
+	        <div id="divtest">
+	            <div class="title">
+	                <span class="fl">合并原有对象</span> 
+	            </div>
+	            <div class="content">
+	                <div class="tip"></div>
+	            </div>
+	        </div>
+	        
+	        <script type="text/javascript">
+	            $(function () {
+	                var objInfo = { name: "" };
+	                var objMess = { name: "白富美,", title: "欢迎与我联系！" };
+	                var objNewInfo =$.extend(objInfo,objMess);
+	                var strTmp = "<b>对象 白富美 合并后</b>：<br/><br/>";
+	                strTmp += objNewInfo.name + objInfo.title;
+	                //显示在页面中
+	                $(".tip").show().append(strTmp);
+	            });
+	        </script>
+	    </body>
+	</html>	        
+102、	
